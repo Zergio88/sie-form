@@ -346,5 +346,52 @@ public class controller {
 		}
 		
 		return respuesta;
-	}	
+	}
+	
+	public String registrosPorPallet(String pallet) throws IOException  {
+		
+		//String uri = "http://"+ip+":8080/api/v1/bienes/cantidadPorPiso"+"?pallet="+pallet;
+		String uri = "http://"+ip+":8080/api/v1/bienes";
+		String respuesta = "";
+		
+		URL url = new URL(uri);
+
+		String host = url.getHost();
+		System.out.println("host "+host);
+		try {
+			InetAddress inetadress = InetAddress.getByName(host);
+			boolean isReachable = inetadress.isReachable(5000);
+			if(isReachable) {
+				System.out.println("srv OK");
+
+				HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+				connection.setRequestMethod("GET");
+
+				/* leer response usando InputStream y BufferedReader */
+				BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+				String inputLine;
+				StringBuilder response = new StringBuilder();
+
+				while ((inputLine = reader.readLine()) != null) {
+					response.append(inputLine);
+				}
+
+				reader.close();
+
+				respuesta=response.toString();
+
+				connection.disconnect();
+
+			} else {
+				respuesta = "Srv no disponible";
+			}
+		} catch (UnknownHostException e) {
+			System.out.println("No se puede resolver el nombre del srv");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return respuesta;		
+		
+	}
 }

@@ -27,7 +27,10 @@ import javax.swing.table.TableColumn;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import controlller.controller;
 
@@ -36,7 +39,7 @@ public class consultaForm extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	String pallet,nroSerie;
-	JPanel panelCantPorPallet, panelByNroSerie, panelCantPorPiso;
+	JPanel panelCantPorPallet, panelByNroSerie, panelCantPorPiso,panelByPallet;
 	JLabel jblPallet,jblNroSerie,jblEtiquetaResponse,jblResponse;
 	
 	JTextField txtPallet,txtNroSerie;
@@ -75,6 +78,11 @@ public class consultaForm extends JFrame {
 		if(value==3) {
 			setTitle("Informes-cantidad por piso");
 			placePanelCantPorPiso();
+		}
+		
+		if(value==4) {
+			setTitle("Informes-dispositivos por pallet");
+			placePanelByPallet();
 		}
 	
 	}
@@ -373,6 +381,121 @@ public class consultaForm extends JFrame {
 		
 		this.add(panelCantPorPiso);
 		
+	}
+	
+	private void placePanelByPallet() {
+		
+		panelByPallet = new JPanel();
+		panelByPallet.setLayout(null);
+		panelByPallet.setBounds(0,0,800,600);
+		panelByPallet.setBackground(bgPanel);
+		
+		jblPallet = new JLabel("Pallet: ");
+		jblPallet.setFont(new Font("Garamond",Font.BOLD,20));
+		jblPallet.setHorizontalAlignment(SwingConstants.CENTER);
+		jblPallet.setForeground(fntLbl);
+		jblPallet.setBounds(10, 10, 100, 30);
+		
+		// agregar txtbox para el pallet
+		txtPallet = new JTextField();
+		txtPallet.setBounds(135,10,200,30);
+		
+		
+		btnConsulta=new JButton("Consultar");
+		btnConsulta.setBounds(368, 10, 150, 30);
+		//btnConsulta.setBackground(bgContador);
+		//btnConsulta.setForeground(fntContador);
+		btnConsulta.setFont(new Font("Garamond", Font.BOLD,20));
+		
+		btnConsulta.addActionListener(new ActionListener() {	
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				String respuesta="";
+				
+				pallet = txtPallet.getText();
+				if(pallet.isEmpty()) {
+					JOptionPane.showMessageDialog(null,"verifique campo pallet");
+					return;
+				}
+				
+				try {
+					respuesta = controller.getInstancia().registrosPorPallet(pallet);
+					System.out.println("cantidades por piso : "+respuesta);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				if(respuesta.isEmpty()) {	
+					JOptionPane.showMessageDialog(null,"No se encontro el pallet");
+					return;
+				}
+				
+				ObjectMapper objectMapper = new ObjectMapper();
+				// Crear un modelo de tabla
+		        DefaultTableModel tableModel = new DefaultTableModel();
+
+		        // Definir las columnas
+		        tableModel.addColumn("ID");
+		        tableModel.addColumn("Modelo");
+		        tableModel.addColumn("Serie");
+		        tableModel.addColumn("Estado");
+		        tableModel.addColumn("Pallet");
+		        tableModel.addColumn("Piso");
+		        tableModel.addColumn("Responsables");
+		        tableModel.addColumn("Fecha y Hora");
+
+		        try {
+		            // Parsear el JSON
+		            ArrayNode jsonArray = objectMapper.readValue(respuesta, ArrayNode.class);
+
+		            // Llenar el modelo de tabla
+		            for (JsonNode jsonNode : jsonArray) {
+		                if (jsonNode instanceof ObjectNode) {
+		                    ObjectNode jsonObject = (ObjectNode) jsonNode;
+		                    Object[] rowData = {
+		                            jsonObject.get("id").asInt(),
+		                            jsonObject.get("modelo").asText(),
+		                            jsonObject.get("serie").asText(),
+		                            jsonObject.get("estado").asText(),
+		                            jsonObject.get("pallet").asText(),
+		                            jsonObject.get("piso").asInt(),
+		                            jsonObject.get("responsables").asText(),
+		                            jsonObject.get("fechayhora").asText()
+		                    };
+		                    tableModel.addRow(rowData);
+		                    System.out.println("RowData: "+rowData[0].toString() + "-" + rowData[1].toString() + "-" +rowData[2].toString() + "-" +rowData[3].toString() + "-" +rowData[4].toString() + "-" +rowData[5].toString() + "-" +rowData[6].toString()+ "-" +rowData[7].toString());
+		                }
+		            }
+		            
+		        } catch (IOException e1) {
+		            e1.printStackTrace();
+		        }
+
+		        // Crear la tabla
+		        JTable table = new JTable(tableModel);
+		    	//table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+				// Establece el tamaño de la tabla
+				table.setRowHeight(20);
+
+		        // Crear un JScrollPane para la tabla si es necesario
+		        JScrollPane scrollPane = new JScrollPane(table);
+		        
+		        scrollPane.setBounds(20, 70, 750, 400);
+		        
+		    	panelByPallet.add(scrollPane, BorderLayout.CENTER);
+		    	
+			}
+		});
+		
+		
+		
+		panelByPallet.add(jblPallet);
+		panelByPallet.add(txtPallet);
+		panelByPallet.add(btnConsulta);
+		
+		this.add(panelByPallet);
 	}
 	
 	private String formatearFecha(String fechasinFormat) {

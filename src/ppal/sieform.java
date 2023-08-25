@@ -51,7 +51,7 @@ public class sieform {
 	JPanel homePanel,panel,panelHeader,panelPisos;
 	JMenuBar barraMenu;
 	JMenu inventario, edicion, informes, config;
-	JMenuItem nuevoItem, retomarItem, editarRegistroItem, cantByPalletItem, bySerieItem, cantPisoByPallet, configServer;
+	JMenuItem nuevoItem, retomarItem, editarRegistroItem, cantByPalletItem, bySerieItem, cantPisoByPallet, byPallet, configServer;
 	
 	JLabel jblSerie,jblModelo,jblEstado,jblPallet,jblPiso,jblResponsables,jblContTexto,jblContador,jblDelContadorPorPiso,jblContadorPorPiso,jblStatusSrv,jblCantPiso;
 		
@@ -213,6 +213,15 @@ public class sieform {
 			}
 		});
 		
+		byPallet = new JMenuItem("registros por pallet");
+		byPallet.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				consultaForm ventanaReportes = new consultaForm(4);
+				ventanaReportes.setVisible(true);;
+			}
+		});
+		
 		configServer = new JMenuItem("Configurar IP");
 		configServer.addActionListener(new ActionListener() {
 			@Override
@@ -228,6 +237,7 @@ public class sieform {
 		informes.add(cantByPalletItem);
 		informes.add(bySerieItem);
 		informes.add(cantPisoByPallet);
+		informes.add(byPallet);
 		config.add(configServer);
 		
 		barraMenu.add(inventario);
