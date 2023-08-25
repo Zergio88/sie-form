@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -30,6 +32,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import controlller.controller;
 
 public class consultaForm extends JFrame {
+	
+	private static final long serialVersionUID = 1L;
 	
 	String pallet,nroSerie;
 	JPanel panelCantPorPallet, panelByNroSerie, panelCantPorPiso;
@@ -152,9 +156,11 @@ public class consultaForm extends JFrame {
 					// fecha
 					aux=String.valueOf(datos[7]);
 					splitString=aux.split(":");
-					auxfecha=String.valueOf(splitString[1]+":"+splitString[2]+":"+splitString[3]+"\"").replaceAll("\"", "");
-
-					Object[][] data = {{auxserie, auxmodelo, auxestado,auxpallet,auxpiso,auxresponsable,auxfecha}};
+					auxfecha=String.valueOf(splitString[1]+":"+splitString[2]+":"+splitString[3]+":"+splitString[4]+"\"").replaceAll("\"", "").replaceAll("}","");
+					
+					String fechaFormateada=formatearFecha(auxfecha);
+								
+					Object[][] data = {{auxserie, auxmodelo, auxestado,auxpallet,auxpiso,auxresponsable,fechaFormateada}};
 
 					// Crear los encabezados de la tabla
 					Object[] headers = {"serie", "modelo", "estado","pallet","piso","responsables","fecha"};
@@ -368,7 +374,21 @@ public class consultaForm extends JFrame {
 		this.add(panelCantPorPiso);
 		
 	}
+	
+	private String formatearFecha(String fechasinFormat) {
+		String fechaFormateada=String.valueOf(fechasinFormat);
+		try {
+			SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+			Date date = inputFormat.parse(fechasinFormat);
+			SimpleDateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+			fechaFormateada= outputFormat.format(date);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
 		
+		return fechaFormateada;
+	}
+	
 	// placePanel produccion por fecha
 	
 	// placePanel para cargar ultimos 10 ingresado de un pallet

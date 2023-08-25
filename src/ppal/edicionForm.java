@@ -23,6 +23,8 @@ import controlller.controller;
 
 public class edicionForm extends JFrame {
 
+	private static final long serialVersionUID = 1L;
+
 	String pallet,nroSerie;
 	
 	JPanel panel,panelHeader;

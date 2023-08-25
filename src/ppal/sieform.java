@@ -50,10 +50,10 @@ public class sieform {
 
 	JPanel homePanel,panel,panelHeader,panelPisos;
 	JMenuBar barraMenu;
-	JMenu inventario, edicion, informes;
-	JMenuItem nuevoItem, retomarItem, editarRegistroItem, cantByPalletItem, bySerieItem, cantPisoByPallet;
+	JMenu inventario, edicion, informes, config;
+	JMenuItem nuevoItem, retomarItem, editarRegistroItem, cantByPalletItem, bySerieItem, cantPisoByPallet, configServer;
 	
-	JLabel jblSerie,jblModelo,jblEstado,jblPallet,jblPiso,jblResponsables,jblContTexto,jblContador,jblContadorPorPiso,jblStatusSrv,jblCantPiso;
+	JLabel jblSerie,jblModelo,jblEstado,jblPallet,jblPiso,jblResponsables,jblContTexto,jblContador,jblDelContadorPorPiso,jblContadorPorPiso,jblStatusSrv,jblCantPiso;
 		
 	JTextField txtSerie,txtModelo,txtPallet,txtPiso,txtResponsables,txtCantPiso;
 	
@@ -156,6 +156,7 @@ public class sieform {
 		inventario = new JMenu("Inventario");
 		edicion= new JMenu("Edicion");
 		informes= new JMenu("Informes");
+		config= new JMenu("Config");
 
 		nuevoItem = new JMenuItem("Nuevo");
 		nuevoItem.addActionListener(new ActionListener() {
@@ -212,16 +213,27 @@ public class sieform {
 			}
 		});
 		
+		configServer = new JMenuItem("Configurar IP");
+		configServer.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				configForm ventanaConfig=new configForm();
+				ventanaConfig.setVisible(true);
+			}
+		});
+		
 		inventario.add(nuevoItem);
 		inventario.add(retomarItem);
 		edicion.add(editarRegistroItem);
 		informes.add(cantByPalletItem);
 		informes.add(bySerieItem);
 		informes.add(cantPisoByPallet);
+		config.add(configServer);
 		
 		barraMenu.add(inventario);
 		barraMenu.add(edicion);
 		barraMenu.add(informes);
+		barraMenu.add(config);
 		
 		barraMenu.setVisible(true);
 		ventana.setJMenuBar(barraMenu);
@@ -340,8 +352,16 @@ public class sieform {
 		jblContador.setBackground(bgPanelHeader);
 		jblContador.setForeground(fntContador);
 		
+		jblDelContadorPorPiso = new JLabel("Cantidad del piso");
+		jblDelContadorPorPiso.setBounds(550,80,200, 40);
+		jblDelContadorPorPiso.setOpaque(true); //habilitar cambiar color bgLabel
+		jblDelContadorPorPiso.setHorizontalAlignment(SwingConstants.CENTER); // align horizontal
+		jblDelContadorPorPiso.setFont(new Font("Comic Sans MS", Font.BOLD,20));
+		jblDelContadorPorPiso.setBackground(bgContador);
+		jblDelContadorPorPiso.setForeground(fntContador);
+		
 		jblContadorPorPiso=new JLabel("0");
-		jblContadorPorPiso.setBounds(550, 30,200 , 100);
+		jblContadorPorPiso.setBounds(550, 120,200,100);
 		jblContadorPorPiso.setOpaque(true); //habilitar cambiar color bgLabel
 		jblContadorPorPiso.setHorizontalAlignment(SwingConstants.CENTER); // align horizontal
 		jblContadorPorPiso.setFont(new Font("Comic Sans MS", Font.BOLD,50));
@@ -356,6 +376,7 @@ public class sieform {
 		panel.add(jblPallet);
 		panel.add(jblPiso);
 		panel.add(jblResponsables);
+		panel.add(jblDelContadorPorPiso);
 		panel.add(jblContadorPorPiso);
 		panel.add(jblStatusSrv);
 		

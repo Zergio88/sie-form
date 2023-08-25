@@ -18,9 +18,9 @@ import java.net.UnknownHostException;
 public class controller {
 
 	private static controller instancia;
-	//private String ip="127.0.0.1";
-	private String ip="192.168.1.101";
-	
+	private String ip="127.0.0.1";
+	//private String ip="192.168.1.101";
+	//private String ip="192.168.2.100";
 	
 	public static controller getInstancia(){
 		if(instancia==null)
@@ -95,7 +95,15 @@ public class controller {
 		return respuesta;
 	}
 	
-    private static String createJsonWithId(String[] datos) throws JsonProcessingException {
+    public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+
+	private static String createJsonWithId(String[] datos) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode json = mapper.createObjectNode();
         
