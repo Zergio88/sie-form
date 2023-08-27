@@ -350,8 +350,8 @@ public class controller {
 	
 	public String registrosPorPallet(String pallet) throws IOException  {
 		
-		//String uri = "http://"+ip+":8080/api/v1/bienes/cantidadPorPiso"+"?pallet="+pallet;
-		String uri = "http://"+ip+":8080/api/v1/bienes";
+		String uri = "http://"+ip+":8080/api/v1/bienes/regPorPallet"+"?pallet="+pallet;
+		//String uri = "http://"+ip+":8080/api/v1/bienes";
 		String respuesta = "";
 		
 		URL url = new URL(uri);

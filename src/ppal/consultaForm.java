@@ -454,6 +454,7 @@ public class consultaForm extends JFrame {
 		            for (JsonNode jsonNode : jsonArray) {
 		                if (jsonNode instanceof ObjectNode) {
 		                    ObjectNode jsonObject = (ObjectNode) jsonNode;
+		                    String fechaFormateada=formatearFecha(jsonObject.get("fechayhora").asText());
 		                    Object[] rowData = {
 		                            jsonObject.get("id").asInt(),
 		                            jsonObject.get("modelo").asText(),
@@ -462,7 +463,7 @@ public class consultaForm extends JFrame {
 		                            jsonObject.get("pallet").asText(),
 		                            jsonObject.get("piso").asInt(),
 		                            jsonObject.get("responsables").asText(),
-		                            jsonObject.get("fechayhora").asText()
+		                            fechaFormateada
 		                    };
 		                    tableModel.addRow(rowData);
 		                    System.out.println("RowData: "+rowData[0].toString() + "-" + rowData[1].toString() + "-" +rowData[2].toString() + "-" +rowData[3].toString() + "-" +rowData[4].toString() + "-" +rowData[5].toString() + "-" +rowData[6].toString()+ "-" +rowData[7].toString());
