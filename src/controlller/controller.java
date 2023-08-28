@@ -19,7 +19,6 @@ public class controller {
 
 	private static controller instancia;
 	private String ip="127.0.0.1";
-	//private String ip="192.168.1.101";
 	//private String ip="192.168.2.100";
 	
 	public static controller getInstancia(){
@@ -33,9 +32,9 @@ public class controller {
 		String uri = "http://"+ip+":8080/api/v1/bienes";
         String jsonBody = createJson(datos);
         String respuesta = null;
-        URL url = new URL(uri);
-      
+        URL url = new URL(uri);    
         String host = url.getHost();
+        
         try {
 			InetAddress inetadress = InetAddress.getByName(host);
 			boolean isReachable = inetadress.isReachable(5000);
@@ -142,14 +141,12 @@ public class controller {
 
 	public String updateContador(String pallet) throws IOException {
 		 
-	    String uri = "http://"+ip+":8080/api/v1/bienes/cantidad"+"?pallet="+pallet;
-	    
+	    String uri = "http://"+ip+":8080/api/v1/bienes/cantidad"+"?pallet="+pallet;	    
         String respuesta = "response initial";
-
-        URL url = new URL(uri);
-              
+        URL url = new URL(uri);             
         String host = url.getHost();
         System.out.println("host "+host);
+        
         try {
 			InetAddress inetadress = InetAddress.getByName(host);
 			boolean isReachable = inetadress.isReachable(5000);
@@ -183,20 +180,17 @@ public class controller {
 			e.printStackTrace();
 		}
         
-		return respuesta;
-		
+		return respuesta;		
 	}
 	
 	public String getByNumeroSerie(String serie) throws IOException {
 		
-		String uri = "http://"+ip+":8080/api/v1/bienes/ByNumeroSerie"+"?serie="+serie;
-	    
+		String uri = "http://"+ip+":8080/api/v1/bienes/ByNumeroSerie"+"?serie="+serie;	    
         String respuesta = "response initial";
-
-        URL url = new URL(uri);
-              
+        URL url = new URL(uri);              
         String host = url.getHost();
         System.out.println("host "+host);
+        
         try {
 			InetAddress inetadress = InetAddress.getByName(host);
 			boolean isReachable = inetadress.isReachable(5000);
@@ -239,9 +233,9 @@ public class controller {
 		String uri = "http://"+ip+":8080/api/v1/bienes/update";
         String jsonBody = createJsonWithId(datos);
         String respuesta = null;
-        URL url = new URL(uri);
-      
+        URL url = new URL(uri);     
         String host = url.getHost();
+        
         try {
 			InetAddress inetadress = InetAddress.getByName(host);
 			boolean isReachable = inetadress.isReachable(5000);
@@ -298,20 +292,17 @@ public class controller {
         }
       
         connection.disconnect();
-		return respuesta;	
-
+		return respuesta;
 	}
 
 	public String cantidadPorPiso(String pallet) throws IOException {
 		
 		String uri = "http://"+ip+":8080/api/v1/bienes/cantidadPorPiso"+"?pallet="+pallet;
-
 		String respuesta = "";
-
 		URL url = new URL(uri);
-
 		String host = url.getHost();
 		System.out.println("host "+host);
+		
 		try {
 			InetAddress inetadress = InetAddress.getByName(host);
 			boolean isReachable = inetadress.isReachable(5000);
@@ -351,13 +342,55 @@ public class controller {
 	public String registrosPorPallet(String pallet) throws IOException  {
 		
 		String uri = "http://"+ip+":8080/api/v1/bienes/regPorPallet"+"?pallet="+pallet;
-		//String uri = "http://"+ip+":8080/api/v1/bienes";
-		String respuesta = "";
-		
+		String respuesta = "";	
 		URL url = new URL(uri);
-
 		String host = url.getHost();
 		System.out.println("host "+host);
+		
+		try {
+			InetAddress inetadress = InetAddress.getByName(host);
+			boolean isReachable = inetadress.isReachable(5000);
+			if(isReachable) {
+				System.out.println("srv OK");
+
+				HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+				connection.setRequestMethod("GET");
+
+				/* leer response usando InputStream y BufferedReader */
+				BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+				String inputLine;
+				StringBuilder response = new StringBuilder();
+
+				while ((inputLine = reader.readLine()) != null) {
+					response.append(inputLine);
+				}
+
+				reader.close();
+
+				respuesta=response.toString();
+
+				connection.disconnect();
+
+			} else {
+				respuesta = "Srv no disponible";
+			}
+		} catch (UnknownHostException e) {
+			System.out.println("No se puede resolver el nombre del srv");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return respuesta;	
+	}
+
+	public String ListaPallet() throws IOException {
+		
+		String uri = "http://"+ip+":8080/api/v1/bienes/listaDePallets";
+		String respuesta = "";	
+		URL url = new URL(uri);
+		String host = url.getHost();
+		System.out.println("host "+host);
+		
 		try {
 			InetAddress inetadress = InetAddress.getByName(host);
 			boolean isReachable = inetadress.isReachable(5000);
@@ -392,6 +425,5 @@ public class controller {
 		}
 		
 		return respuesta;		
-		
 	}
 }

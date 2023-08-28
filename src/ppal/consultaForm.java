@@ -8,9 +8,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Date;
 import java.text.SimpleDateFormat;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -21,7 +19,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.border.BevelBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
@@ -39,7 +36,7 @@ public class consultaForm extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	String pallet,nroSerie;
-	JPanel panelCantPorPallet, panelByNroSerie, panelCantPorPiso,panelByPallet;
+	JPanel panelCantPorPallet, panelByNroSerie, panelCantPorPiso,panelByPallet, panelListaPallet;
 	JLabel jblPallet,jblNroSerie,jblEtiquetaResponse,jblResponse;
 	
 	JTextField txtPallet,txtNroSerie;
@@ -84,7 +81,11 @@ public class consultaForm extends JFrame {
 			setTitle("Informes-dispositivos por pallet");
 			placePanelByPallet();
 		}
-	
+		
+		if(value==5) {
+			setTitle("Informes-Listado de pallets");
+			placePanelListadoDePallets();
+		}
 	}
 	
 	private void placePanelByNumeroSerie() {
@@ -106,8 +107,8 @@ public class consultaForm extends JFrame {
 		
 		btnConsulta=new JButton("Consultar");
 		btnConsulta.setBounds(368, 10, 150, 30);
-		//btnConsulta.setBackground(bgContador);
-		//btnConsulta.setForeground(fntContador);
+		btnConsulta.setBackground(bgResponse);
+		btnConsulta.setForeground(fntResponse);
 		btnConsulta.setFont(new Font("Garamond", Font.BOLD,20));
 		btnConsulta.addActionListener(new ActionListener() {
 
@@ -178,7 +179,6 @@ public class consultaForm extends JFrame {
 
 					// Crear la tabla con el modelo de tabla
 					JTable table = new JTable(model);
-					//table.setBounds(0, 0,100, 70);
 
 					table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 					// Establece el tamaño de la tabla
@@ -187,14 +187,12 @@ public class consultaForm extends JFrame {
 					TableColumn lastColumn = table.getColumnModel().getColumn(table.getColumnCount() - 1);
 					lastColumn.setPreferredWidth(150); 
 
-
 					JScrollPane scrollPane = new JScrollPane(table);
 
 					scrollPane.setBounds(10, 70, 750, 50);
 
 					panelByNroSerie.add(scrollPane, BorderLayout.CENTER);
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
@@ -203,8 +201,6 @@ public class consultaForm extends JFrame {
 		panelByNroSerie.add(jblNroSerie);
 		panelByNroSerie.add(txtNroSerie);
 		panelByNroSerie.add(btnConsulta);
-		//panelByNroSerie.add(jblEtiquetaResponse);
-		//panelByNroSerie.add(jblResponse);
 		
 		this.add(panelByNroSerie);
 	}
@@ -243,8 +239,8 @@ public class consultaForm extends JFrame {
 		
 		btnConsulta=new JButton("Consultar");
 		btnConsulta.setBounds(368, 10, 150, 30);
-		//btnConsulta.setBackground(bgContador);
-		//btnConsulta.setForeground(fntContador);
+		btnConsulta.setBackground(bgResponse);
+		btnConsulta.setForeground(fntResponse);
 		btnConsulta.setFont(new Font("Garamond", Font.BOLD,20));
 		btnConsulta.addActionListener(new ActionListener() {	
 			@Override
@@ -259,7 +255,6 @@ public class consultaForm extends JFrame {
 				try {
 					jblResponse.setText(controller.getInstancia().updateContador(pallet));
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				
@@ -272,8 +267,7 @@ public class consultaForm extends JFrame {
 		panelCantPorPallet.add(jblEtiquetaResponse);
 		panelCantPorPallet.add(jblResponse);
 		
-		this.add(panelCantPorPallet);
-		
+		this.add(panelCantPorPallet);		
 	}
 	
 	private void placePanelCantPorPiso() {
@@ -296,8 +290,8 @@ public class consultaForm extends JFrame {
 		
 		btnConsulta=new JButton("Consultar");
 		btnConsulta.setBounds(368, 10, 150, 30);
-		//btnConsulta.setBackground(bgContador);
-		//btnConsulta.setForeground(fntContador);
+		btnConsulta.setBackground(bgResponse);
+		btnConsulta.setForeground(fntResponse);
 		btnConsulta.setFont(new Font("Garamond", Font.BOLD,20));
 		btnConsulta.addActionListener(new ActionListener() {	
 			@Override
@@ -353,7 +347,7 @@ public class consultaForm extends JFrame {
 
 					// Crear la tabla con el modelo de tabla
 					JTable table = new JTable(model);
-					//table.setBounds(0, 0,100, 70);
+
 					table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 					// Establece el tamaño de la tabla
 					table.setRowHeight(20);
@@ -365,13 +359,10 @@ public class consultaForm extends JFrame {
 					panelCantPorPiso.add(scrollPane, BorderLayout.CENTER);
 					
 				} catch (JsonMappingException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (JsonProcessingException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				}
-				
+				}			
 			}
 		});
 		
@@ -379,8 +370,7 @@ public class consultaForm extends JFrame {
 		panelCantPorPiso.add(txtPallet);
 		panelCantPorPiso.add(btnConsulta);
 		
-		this.add(panelCantPorPiso);
-		
+		this.add(panelCantPorPiso);		
 	}
 	
 	private void placePanelByPallet() {
@@ -399,12 +389,11 @@ public class consultaForm extends JFrame {
 		// agregar txtbox para el pallet
 		txtPallet = new JTextField();
 		txtPallet.setBounds(135,10,200,30);
-		
-		
+				
 		btnConsulta=new JButton("Consultar");
 		btnConsulta.setBounds(368, 10, 150, 30);
-		//btnConsulta.setBackground(bgContador);
-		//btnConsulta.setForeground(fntContador);
+		btnConsulta.setBackground(bgResponse);
+		btnConsulta.setForeground(fntResponse);
 		btnConsulta.setFont(new Font("Garamond", Font.BOLD,20));
 		
 		btnConsulta.addActionListener(new ActionListener() {	
@@ -423,7 +412,6 @@ public class consultaForm extends JFrame {
 					respuesta = controller.getInstancia().registrosPorPallet(pallet);
 					System.out.println("cantidades por piso : "+respuesta);
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				
@@ -476,7 +464,6 @@ public class consultaForm extends JFrame {
 
 		        // Crear la tabla
 		        JTable table = new JTable(tableModel);
-		    	//table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 				// Establece el tamaño de la tabla
 				table.setRowHeight(20);
 
@@ -485,18 +472,87 @@ public class consultaForm extends JFrame {
 		        
 		        scrollPane.setBounds(20, 70, 750, 400);
 		        
-		    	panelByPallet.add(scrollPane, BorderLayout.CENTER);
-		    	
+		    	panelByPallet.add(scrollPane, BorderLayout.CENTER);		    	
 			}
 		});
-		
-		
-		
+				
 		panelByPallet.add(jblPallet);
 		panelByPallet.add(txtPallet);
 		panelByPallet.add(btnConsulta);
 		
 		this.add(panelByPallet);
+	}
+	
+	private void placePanelListadoDePallets() {
+		
+		panelListaPallet = new JPanel();
+		panelListaPallet.setLayout(null);
+		panelListaPallet.setBounds(0,0,800,600);
+		panelListaPallet.setBackground(bgPanel);
+		
+		jblPallet = new JLabel("Listado de Pallets");
+		jblPallet.setFont(new Font("Garamond",Font.BOLD,25));
+		jblPallet.setHorizontalAlignment(SwingConstants.CENTER);
+		jblPallet.setForeground(fntLbl);
+		jblPallet.setBounds(10, 10, 200, 30);
+				
+		btnConsulta=new JButton("Consultar");
+		btnConsulta.setBounds(250, 10, 150, 30);
+		btnConsulta.setBackground(bgResponse);
+		btnConsulta.setForeground(fntResponse);
+		btnConsulta.setFont(new Font("Garamond", Font.BOLD,20));
+		btnConsulta.addActionListener(new ActionListener() {	
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				String respuesta="";
+								
+				try {
+					respuesta = controller.getInstancia().ListaPallet();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				
+				if(respuesta.isEmpty()) {	
+					JOptionPane.showMessageDialog(null,"No se encontro el pallet");
+					return;
+				}
+				
+				// Crear el modelo de tabla con los datos y los encabezados
+				DefaultTableModel model = new DefaultTableModel();
+				model.addColumn("INDICE");
+				model.addColumn("PALLET");
+				
+				String cadena = String.valueOf(respuesta.replaceAll("\"","").replaceAll("\\[","").replaceAll("\\]", ""));
+				String[] elementos = cadena.split(",");
+				
+			      for (int i = 0; i < elementos.length; i++) {
+			            String numero = Integer.toString(i + 1); // Número de fila
+			            String pallet = elementos[i]; // Valor en la columna "Pallet"
+			            model.addRow(new String[]{numero, pallet});
+			      }
+
+				// Crear la tabla con el modelo de tabla
+				JTable table = new JTable(model);
+
+				table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+				// Establece el tamaño de la tabla
+				table.setRowHeight(20);
+
+				JScrollPane scrollPane = new JScrollPane(table);
+
+				scrollPane.setBounds(20, 70, 500, 250);
+
+				panelListaPallet.add(scrollPane, BorderLayout.CENTER);
+							
+			}
+		});
+		
+		panelListaPallet.add(jblPallet);
+		panelListaPallet.add(btnConsulta);
+		
+		this.add(panelListaPallet);		
+		
 	}
 	
 	private String formatearFecha(String fechasinFormat) {

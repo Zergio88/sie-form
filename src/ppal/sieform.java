@@ -1,6 +1,5 @@
 package ppal;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -16,8 +15,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.util.List;
 
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -38,7 +35,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
-import javax.swing.border.TitledBorder;
 
 import controlller.controller;
 
@@ -51,14 +47,14 @@ public class sieform {
 	JPanel homePanel,panel,panelHeader,panelPisos;
 	JMenuBar barraMenu;
 	JMenu inventario, edicion, informes, config;
-	JMenuItem nuevoItem, retomarItem, editarRegistroItem, cantByPalletItem, bySerieItem, cantPisoByPallet, byPallet, configServer;
+	JMenuItem nuevoItem, retomarItem, editarRegistroItem, cantByPalletItem, bySerieItem, cantPisoByPallet, byPallet, ListaPallets, configServer;
 	
 	JLabel jblSerie,jblModelo,jblEstado,jblPallet,jblPiso,jblResponsables,jblContTexto,jblContador,jblDelContadorPorPiso,jblContadorPorPiso,jblStatusSrv,jblCantPiso;
 		
 	JTextField txtSerie,txtModelo,txtPallet,txtPiso,txtResponsables,txtCantPiso;
 	
 	JTextArea txtAreaEstado;
-	JComboBox listaEstados;
+	//JComboBox listaEstados;
 	
 	ButtonGroup groupRadioBtn;
 	JRadioButton radiobtnFijo;
@@ -73,6 +69,7 @@ public class sieform {
 	
 	// creo clip para el alerta
 	Clip clip = null;
+	
 	/* propiedades del monitor */	
 	Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
 	
@@ -85,18 +82,14 @@ public class sieform {
 	Color bgContador = Color.decode("#332B47");
 	Color fntContador= Color.decode("#FBFBFA");
 	int contadorPisoVariable=0;
-	//Color fntContador= Color.decode("#AD92F1");
 	
-	private sieform() {
-	
+	private sieform() {	
 		ventana=new JFrame();
 		ventana.setBackground(Color.DARK_GRAY);
 		ventana.setTitle(titulo);
 		ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		Inicializar();
-		//panel.repaint();
-
 	}
 	
 	public static sieform getInstance() {
@@ -151,7 +144,7 @@ public class sieform {
 		homePanel.add(jblBienvenido);
 		homePanel.add(labelFondo);
 	
-		/* prueba menu */
+		/* menu */
 		barraMenu=new JMenuBar();
 		inventario = new JMenu("Inventario");
 		edicion= new JMenu("Edicion");
@@ -160,14 +153,12 @@ public class sieform {
 
 		nuevoItem = new JMenuItem("Nuevo");
 		nuevoItem.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Oculta el panel de home y habilita el panel que contiene el form
 				homePanel.setVisible(false);
 				sieform.this.placeForm();
-			}
-			
+			}		
 		});
 		
 		retomarItem = new JMenuItem("Retomar Pallet");
@@ -182,7 +173,6 @@ public class sieform {
 			}
 			
 		});
-		//editarRegistroItem.setEnabled(false);
 		
 		cantByPalletItem = new JMenuItem("Cantidad por pallet");
 		cantByPalletItem.addActionListener(new ActionListener() {
@@ -218,7 +208,16 @@ public class sieform {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				consultaForm ventanaReportes = new consultaForm(4);
-				ventanaReportes.setVisible(true);;
+				ventanaReportes.setVisible(true);
+			}
+		});
+		
+		ListaPallets = new JMenuItem("Listado de pallets");
+		ListaPallets.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				consultaForm ventanaReportes = new consultaForm(5);
+				ventanaReportes.setVisible(true);
 			}
 		});
 		
@@ -238,6 +237,7 @@ public class sieform {
 		informes.add(bySerieItem);
 		informes.add(cantPisoByPallet);
 		informes.add(byPallet);
+		informes.add(ListaPallets);
 		config.add(configServer);
 		
 		barraMenu.add(inventario);
@@ -256,9 +256,9 @@ public class sieform {
 		
 		panel=new JPanel();
 		panel.setBackground(bgPanel);
-		//panel.setSize(400, 400);
 		panel.setBounds(0, 50, 800, 550);
 		panel.setLayout(null);
+		
 		/* agrego al panel el evento de capturar el ENTER cuando tenga el foco */
 		addEventEnterKeyToPanel();
 		
@@ -277,31 +277,32 @@ public class sieform {
 		//URL url = getClass().getResource("soundtrack/alerta-por-subnormal.wav");
 
 		// Crear un objeto File a partir de la URL
-		File audioFile = new File("D:\\proyectos-java\\sie-form\\src\\soundtrack\\alerta-por-subnormal.wav");
+		/*File audioFile = new File("D:\\proyectos-java\\sie-form\\src\\soundtrack\\alerta-por-subnormal.wav"); */
+		/*File audioFile = new File("C:\\Users\\sergi\\OneDrive\\Escritorio\\wavs\\LYNC_howler.wav");
         try {
         	clip = AudioSystem.getClip();
             clip.open(AudioSystem.getAudioInputStream(audioFile));
            
         } catch (Exception e) {
             System.err.println(e.getMessage());
-        }
+        }*/
         
-		/*agrega los Labels*/
+		/*coloca los Labels*/
 		placeJlabel();
 		
-		/* agrega los TextField */
+		/* coloca los TextField */
 		placeJTextFields();
 		
-		/* agrega TextArea */
+		/* coloca TextArea */
 		placeJTextArea();
 		
-		/* agrega los botones */
+		/* coloca los botones */
 		placeButtons();	
 		
-		/* agrega radiobuttons */
+		/* coloca radiobuttons */
 		placeRadioButton();
 
-		/* agrega comboBox */
+		/* coloca comboBox */
 		//placeComboBoxes();
 		
 		ventana.add(panelPisos);
@@ -453,12 +454,23 @@ public class sieform {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
+				File audioFile = new File("C:\\Users\\sergi\\OneDrive\\Escritorio\\wavs\\LYNC_howler.wav");
+		        try {
+		        	clip = AudioSystem.getClip();
+		            clip.open(AudioSystem.getAudioInputStream(audioFile));
+		           
+		        } catch (Exception e1) {
+		            System.err.println(e1.getMessage());
+		        }
+				
+				
 				String respuesta="";
 			
 				/* numero de Serie */
-				String inputSerie = txtSerie.getText().replaceAll("\\s", "");
+				String inputSerie = txtSerie.getText().replaceAll("\\s", ""); // elimina espacios en blanco, tab, fin de linea
 
 				if ((inputSerie.isEmpty()) || (inputSerie.length()<8) || (inputSerie.length() > 18)) {
+					clip.start();
 					JOptionPane.showMessageDialog(null, "verifique campo Serie. Longitud de 8-18 caracteres");
 					return;
 				}
@@ -466,6 +478,7 @@ public class sieform {
 				/* Modelo */
 				String modelo = txtModelo.getText();
 				if(modelo.isEmpty()) {
+					clip.start();
 					JOptionPane.showMessageDialog(null,"verifique campo modelo");
 					return;
 				}
@@ -473,6 +486,7 @@ public class sieform {
 				/* valido Estado de acuerdo a campo en base de datos*/
 				String EstadoValidoLong = txtAreaEstado.getText();
 				if(EstadoValidoLong.isEmpty()) {
+					clip.start();
 					JOptionPane.showMessageDialog(null, "verifique campo Estado");
 					return;
 				}
@@ -483,6 +497,7 @@ public class sieform {
 				
 				String pallet = txtPallet.getText();
 				if(pallet.isEmpty()) {
+					clip.start();
 					JOptionPane.showMessageDialog(null, "verifique campo pallet");
 					return;
 				}
@@ -490,6 +505,7 @@ public class sieform {
 				String piso = txtPiso.getText();
 				
 				if(!radiobtnVariable.isSelected() && !radiobtnFijo.isSelected()) {
+					clip.start();
 					JOptionPane.showMessageDialog(null, "verifique cantidad por piso");
 					return;
 				}
@@ -497,6 +513,7 @@ public class sieform {
 				if(radiobtnVariable.isSelected()) {
 					
 					if(piso.isEmpty()) {
+						clip.start();
 						JOptionPane.showMessageDialog(null, "verifique campo piso");
 						return;
 					}
@@ -575,9 +592,13 @@ public class sieform {
 		// Listener Terminar piso variable
 		ActionListener TerminarPisoVariable = new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				contadorPisoVariable=0;
+			public void actionPerformed(ActionEvent e) {				
 				String pisoActual=txtPiso.getText();
+				if(pisoActual.isEmpty()) {
+					JOptionPane.showMessageDialog(null, "verifique campo piso");
+					return;
+				}
+				contadorPisoVariable=0;
 				int pisoActualInteger = Integer.parseInt(pisoActual);
 				pisoActualInteger++;
 				pisoActual=Integer.toString(pisoActualInteger);
@@ -598,20 +619,13 @@ public class sieform {
 		btnFinalPiso.setVisible(false);
 		panelPisos.add(btnFinalPiso);
 		
-		System.out.println("fin del metodo");
 	}
 	
-	
-	
 	private void placeJTextArea() {
-		txtAreaEstado=new JTextArea();
-		
+		txtAreaEstado=new JTextArea();	
 		txtAreaEstado.setBounds(135,130,200,90);
 		txtAreaEstado.setBackground(bgTxt);
-		//txtAreaEstado.setText("hola");
 		txtAreaEstado.addKeyListener(getEventoEnter());
-		//txtAreaEstado.append("\nchau");
-		//txtAreaEstado.setEditable(false);
 		panel.add(txtAreaEstado);
 	}
 	
@@ -631,7 +645,6 @@ public class sieform {
 		radiobtnFijo.addActionListener(evntOcultarComponentes(radiobtnVariable));
 		
 		radiobtnVariable.setBounds(10, 60, 100, 30);
-		//radiobtn2.setBorderPainted(true);
 		radiobtnVariable.addActionListener(evntOcultarComponentes(radiobtnFijo));
 			
 		groupRadioBtn = new ButtonGroup();
@@ -667,9 +680,7 @@ public class sieform {
 		advPanel.add(okButton);
 		advPanel.setFocusable(true);
 		advFrame.add(advPanel);
-		advFrame.pack();
-	
-		
+		advFrame.pack();		
 	    advPanel.addKeyListener(new KeyAdapter() {
 	    	@Override
             public void keyReleased(KeyEvent e) {
@@ -759,10 +770,8 @@ public class sieform {
 		if(radiobtnVariable.isSelected()) {
 			contadorPisoVariable++;
 			jblContadorPorPiso.setText(Integer.toString(contadorPisoVariable));
-		}
-		
-		jblContador.setText(cantidadPallet);
-		
+		}		
+		jblContador.setText(cantidadPallet);		
 	}
 	
 	private String calculaPiso(String pallet, String cantPiso) throws IOException {
