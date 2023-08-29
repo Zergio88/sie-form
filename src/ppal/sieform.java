@@ -13,7 +13,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.File;
 import java.io.IOException;
 
 import javax.sound.sampled.AudioSystem;
@@ -272,20 +271,6 @@ public class sieform {
 		panelPisos.setBounds(368, 130, 150, 140); //(368, 30, 150, 30);
 		panelPisos.setLayout(null);
 		panelPisos.setFocusable(false);
-
-        // inicializa el archivo de audio
-		//URL url = getClass().getResource("soundtrack/alerta-por-subnormal.wav");
-
-		// Crear un objeto File a partir de la URL
-		/*File audioFile = new File("D:\\proyectos-java\\sie-form\\src\\soundtrack\\alerta-por-subnormal.wav"); */
-		/*File audioFile = new File("C:\\Users\\sergi\\OneDrive\\Escritorio\\wavs\\LYNC_howler.wav");
-        try {
-        	clip = AudioSystem.getClip();
-            clip.open(AudioSystem.getAudioInputStream(audioFile));
-           
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }*/
         
 		/*coloca los Labels*/
 		placeJlabel();
@@ -453,25 +438,25 @@ public class sieform {
 		ActionListener accionCargar = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				File audioFile = new File("C:\\Users\\sergi\\OneDrive\\Escritorio\\wavs\\LYNC_howler.wav");
+				String archivoWav = "/soundtrack/LYNC_howler.wav";
+				//String archivoWav = "/soundtrack/alerta-por-subnormal.wav";
+
 		        try {
 		        	clip = AudioSystem.getClip();
-		            clip.open(AudioSystem.getAudioInputStream(audioFile));
+		            clip.open(AudioSystem.getAudioInputStream(getClass().getResource(archivoWav)));
 		           
 		        } catch (Exception e1) {
 		            System.err.println(e1.getMessage());
 		        }
-				
-				
+						
 				String respuesta="";
 			
 				/* numero de Serie */
 				String inputSerie = txtSerie.getText().replaceAll("\\s", ""); // elimina espacios en blanco, tab, fin de linea
 
-				if ((inputSerie.isEmpty()) || (inputSerie.length()<8) || (inputSerie.length() > 18)) {
+				if ((inputSerie.isEmpty()) || (inputSerie.length()<8) || (inputSerie.length() > 22)) {
 					clip.start();
-					JOptionPane.showMessageDialog(null, "verifique campo Serie. Longitud de 8-18 caracteres");
+					JOptionPane.showMessageDialog(null, "verifique campo Serie. Longitud de 8-22 caracteres");
 					return;
 				}
 				
@@ -542,8 +527,7 @@ public class sieform {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				
-				
+								
 				if(respuesta.contains("P-500")) {
 					// Mostrar la alerta con el icono de warning
 				

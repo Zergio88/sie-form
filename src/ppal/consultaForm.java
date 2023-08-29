@@ -386,6 +386,22 @@ public class consultaForm extends JFrame {
 		jblPallet.setForeground(fntLbl);
 		jblPallet.setBounds(10, 10, 100, 30);
 		
+		
+		/* Etiquetas para mostrar Total del pallet */
+		jblEtiquetaResponse = new JLabel("Cantidad: ");
+		jblEtiquetaResponse.setFont(new Font("Garamond",Font.BOLD,20));
+		jblEtiquetaResponse.setHorizontalAlignment(SwingConstants.CENTER);
+		jblEtiquetaResponse.setForeground(fntLbl);
+		jblEtiquetaResponse.setBounds(10, 500, 100, 30);
+		
+		jblResponse = new JLabel();
+		jblResponse.setBounds(135, 500, 200, 30);
+		jblResponse.setOpaque(true);
+		jblResponse.setBackground(bgResponse);
+		jblResponse.setForeground(fntResponse);
+		jblResponse.setFont(new Font("Comic Sans MS",Font.BOLD,20));
+		jblResponse.setHorizontalAlignment(SwingConstants.CENTER);
+		
 		// agregar txtbox para el pallet
 		txtPallet = new JTextField();
 		txtPallet.setBounds(135,10,200,30);
@@ -410,7 +426,6 @@ public class consultaForm extends JFrame {
 				
 				try {
 					respuesta = controller.getInstancia().registrosPorPallet(pallet);
-					System.out.println("cantidades por piso : "+respuesta);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -454,7 +469,7 @@ public class consultaForm extends JFrame {
 		                            fechaFormateada
 		                    };
 		                    tableModel.addRow(rowData);
-		                    System.out.println("RowData: "+rowData[0].toString() + "-" + rowData[1].toString() + "-" +rowData[2].toString() + "-" +rowData[3].toString() + "-" +rowData[4].toString() + "-" +rowData[5].toString() + "-" +rowData[6].toString()+ "-" +rowData[7].toString());
+		                    //System.out.println("RowData: "+rowData[0].toString() + "-" + rowData[1].toString() + "-" +rowData[2].toString() + "-" +rowData[3].toString() + "-" +rowData[4].toString() + "-" +rowData[5].toString() + "-" +rowData[6].toString()+ "-" +rowData[7].toString());
 		                }
 		            }
 		            
@@ -472,11 +487,19 @@ public class consultaForm extends JFrame {
 		        
 		        scrollPane.setBounds(20, 70, 750, 400);
 		        
-		    	panelByPallet.add(scrollPane, BorderLayout.CENTER);		    	
+		    	panelByPallet.add(scrollPane, BorderLayout.CENTER);
+		    	
+		    	try {
+					jblResponse.setText(controller.getInstancia().updateContador(pallet));
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 				
 		panelByPallet.add(jblPallet);
+		panelByPallet.add(jblEtiquetaResponse);
+		panelByPallet.add(jblResponse);
 		panelByPallet.add(txtPallet);
 		panelByPallet.add(btnConsulta);
 		

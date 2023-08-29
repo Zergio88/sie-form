@@ -18,8 +18,8 @@ import java.net.UnknownHostException;
 public class controller {
 
 	private static controller instancia;
-	private String ip="127.0.0.1";
-	//private String ip="192.168.2.100";
+	//private String ip="127.0.0.1";
+	private String ip="192.168.2.100";
 	
 	public static controller getInstancia(){
 		if(instancia==null)
@@ -49,7 +49,7 @@ public class controller {
 			e.printStackTrace();
 		}
                
-        System.out.println("host "+host);
+        //System.out.println("host "+host);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
         connection.setRequestProperty("Content-Type", "application/json");
@@ -66,8 +66,8 @@ public class controller {
         	String responseMsg = connection.getResponseMessage();
 
         	if(responseCode == HttpURLConnection.HTTP_OK) {
-        		System.out.println("Response code: " + responseCode);
-        		System.out.println("mensaje:" + responseMsg);
+        		//System.out.println("Response code: " + responseCode);
+        		//System.out.println("mensaje:" + responseMsg);
 
         		BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"));
         		StringBuilder response = new StringBuilder();
@@ -76,7 +76,7 @@ public class controller {
         			response.append(responseLine.trim());
         		}
         		respuesta = response.toString();
-        		System.out.println(response.toString());
+        		//System.out.println(response.toString());
 
         	} else {
         		// Handle error response
@@ -134,7 +134,7 @@ public class controller {
 
         String jsonString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(json);
         
-        System.out.println(jsonString);
+        //System.out.println(jsonString);
         
         return jsonString;
     }
@@ -145,13 +145,13 @@ public class controller {
         String respuesta = "response initial";
         URL url = new URL(uri);             
         String host = url.getHost();
-        System.out.println("host "+host);
+        //System.out.println("host "+host);
         
         try {
 			InetAddress inetadress = InetAddress.getByName(host);
 			boolean isReachable = inetadress.isReachable(5000);
 			if(isReachable) {
-				System.out.println("srv OK");
+				//System.out.println("srv OK");
 						      
 		        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		        connection.setRequestMethod("GET");
@@ -386,7 +386,7 @@ public class controller {
 	public String ListaPallet() throws IOException {
 		
 		String uri = "http://"+ip+":8080/api/v1/bienes/listaDePallets";
-		String respuesta = "";	
+		String respuesta = "";
 		URL url = new URL(uri);
 		String host = url.getHost();
 		System.out.println("host "+host);
