@@ -74,12 +74,12 @@ public class sieform {
 	
 	String titulo = "SIE -Sistema de Inventario - Educar SE";
 
-	Color bgPanel = Color.decode("#4A4C65"); // gris-violeta oscuro
-	Color bgPanelHeader = Color.decode("#14111C");
-	Color fntLbl =Color.decode("#FBFBFA");
+	Color bgPanel = Color.decode("#4A4C65"); // gris-violeta 
+	Color bgPanelHeader = Color.decode("#14111C"); // violeta oscuro
+	Color fntLbl =Color.decode("#FBFBFA"); // blanco
 	Color bgTxt = Color.decode("#FBFBFA");
-	Color bgContador = Color.decode("#332B47");
-	Color fntContador= Color.decode("#FBFBFA");
+	Color bgContador = Color.decode("#332B47"); // violeta
+	Color fntContador= Color.decode("#FBFBFA"); 
 	int contadorPisoVariable=0;
 	
 	private sieform() {	
