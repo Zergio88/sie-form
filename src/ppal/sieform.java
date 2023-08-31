@@ -202,7 +202,7 @@ public class sieform {
 			}
 		});
 		
-		byPallet = new JMenuItem("registros por pallet");
+		byPallet = new JMenuItem("Registros por pallet");
 		byPallet.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -232,11 +232,11 @@ public class sieform {
 		inventario.add(nuevoItem);
 		inventario.add(retomarItem);
 		edicion.add(editarRegistroItem);
-		informes.add(cantByPalletItem);
-		informes.add(bySerieItem);
-		informes.add(cantPisoByPallet);
 		informes.add(byPallet);
 		informes.add(ListaPallets);
+		informes.add(cantPisoByPallet);
+		informes.add(bySerieItem);
+		informes.add(cantByPalletItem);
 		config.add(configServer);
 		
 		barraMenu.add(inventario);
@@ -438,8 +438,8 @@ public class sieform {
 		ActionListener accionCargar = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//String archivoWav = "/soundtrack/LYNC_howler.wav";
-				String archivoWav = "/soundtrack/alerta-por-subnormal.wav";
+				String archivoWav = "/soundtrack/LYNC_howler.wav";
+				//String archivoWav = "/soundtrack/alerta-por-subnormal.wav";
 
 		        try {
 		        	clip = AudioSystem.getClip();

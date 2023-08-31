@@ -283,6 +283,21 @@ public class consultaForm extends JFrame {
 		jblPallet.setForeground(fntLbl);
 		jblPallet.setBounds(10, 10, 100, 30);
 		
+		/* Etiquetas para mostrar Total del pallet */
+		jblEtiquetaResponse = new JLabel("Cantidad: ");
+		jblEtiquetaResponse.setFont(new Font("Garamond",Font.BOLD,20));
+		jblEtiquetaResponse.setHorizontalAlignment(SwingConstants.CENTER);
+		jblEtiquetaResponse.setForeground(fntLbl);
+		jblEtiquetaResponse.setBounds(10, 500, 100, 30);
+		
+		jblResponse = new JLabel();
+		jblResponse.setBounds(135, 500, 200, 30);
+		jblResponse.setOpaque(true);
+		jblResponse.setBackground(bgResponse);
+		jblResponse.setForeground(fntResponse);
+		jblResponse.setFont(new Font("Comic Sans MS",Font.BOLD,20));
+		jblResponse.setHorizontalAlignment(SwingConstants.CENTER);
+		
 		// agregar txtbox para el pallet
 		txtPallet = new JTextField();
 		txtPallet.setBounds(135,10,200,30);
@@ -362,13 +377,23 @@ public class consultaForm extends JFrame {
 					e1.printStackTrace();
 				} catch (JsonProcessingException e1) {
 					e1.printStackTrace();
-				}			
+				}
+				
+				try {
+					jblResponse.setText(controller.getInstancia().updateContador(pallet));
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 		
+		
 		panelCantPorPiso.add(jblPallet);
+		panelCantPorPiso.add(jblEtiquetaResponse);
+		panelCantPorPiso.add(jblResponse);
 		panelCantPorPiso.add(txtPallet);
 		panelCantPorPiso.add(btnConsulta);
+		
 		
 		this.add(panelCantPorPiso);		
 	}
