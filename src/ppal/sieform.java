@@ -74,7 +74,7 @@ public class sieform {
 	
 	String titulo = "SIE -Sistema de Inventario - Educar SE";
 
-	Color bgPanel = Color.decode("#4A4C65");
+	Color bgPanel = Color.decode("#4A4C65"); // gris-violeta oscuro
 	Color bgPanelHeader = Color.decode("#14111C");
 	Color fntLbl =Color.decode("#FBFBFA");
 	Color bgTxt = Color.decode("#FBFBFA");
@@ -454,9 +454,9 @@ public class sieform {
 				/* numero de Serie */
 				String inputSerie = txtSerie.getText().replaceAll("\\s", ""); // elimina espacios en blanco, tab, fin de linea
 
-				if ((inputSerie.isEmpty()) || (inputSerie.length()<8) || (inputSerie.length() > 22)) {
+				if ((inputSerie.isEmpty()) || (inputSerie.length()<8) || (inputSerie.length() > 25)) {
 					clip.start();
-					JOptionPane.showMessageDialog(null, "verifique campo Serie. Longitud de 8-22 caracteres");
+					JOptionPane.showMessageDialog(null, "verifique campo Serie. Longitud de 8-25 caracteres");
 					return;
 				}
 				
