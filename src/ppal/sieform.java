@@ -438,8 +438,8 @@ public class sieform {
 		ActionListener accionCargar = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String archivoWav = "/soundtrack/LYNC_howler.wav";
-				//String archivoWav = "/soundtrack/alerta-por-subnormal.wav";
+				//String archivoWav = "/soundtrack/LYNC_howler.wav";
+				String archivoWav = "/soundtrack/alerta-por-subnormal.wav";
 
 		        try {
 		        	clip = AudioSystem.getClip();
