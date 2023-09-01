@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Map;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -37,8 +38,9 @@ public class consultaForm extends JFrame {
 	
 	String pallet,nroSerie;
 	JPanel panelCantPorPallet, panelByNroSerie, panelCantPorPiso,panelByPallet, panelListaPallet;
-	JLabel jblPallet,jblNroSerie,jblEtiquetaResponse,jblResponse;
+	JLabel jblPallet,jblNroSerie,jblEtiquetaResponse,jblResponse,jblCheck;
 	
+	JCheckBox ultimosRegistros;
 	JTextField txtPallet,txtNroSerie;
 	JButton btnConsulta;
 	
@@ -283,21 +285,6 @@ public class consultaForm extends JFrame {
 		jblPallet.setForeground(fntLbl);
 		jblPallet.setBounds(10, 10, 100, 30);
 		
-		/* Etiquetas para mostrar Total del pallet */
-		jblEtiquetaResponse = new JLabel("Cantidad: ");
-		jblEtiquetaResponse.setFont(new Font("Garamond",Font.BOLD,20));
-		jblEtiquetaResponse.setHorizontalAlignment(SwingConstants.CENTER);
-		jblEtiquetaResponse.setForeground(fntLbl);
-		jblEtiquetaResponse.setBounds(10, 500, 100, 30);
-		
-		jblResponse = new JLabel();
-		jblResponse.setBounds(135, 500, 200, 30);
-		jblResponse.setOpaque(true);
-		jblResponse.setBackground(bgResponse);
-		jblResponse.setForeground(fntResponse);
-		jblResponse.setFont(new Font("Comic Sans MS",Font.BOLD,20));
-		jblResponse.setHorizontalAlignment(SwingConstants.CENTER);
-		
 		// agregar txtbox para el pallet
 		txtPallet = new JTextField();
 		txtPallet.setBounds(135,10,200,30);
@@ -377,23 +364,13 @@ public class consultaForm extends JFrame {
 					e1.printStackTrace();
 				} catch (JsonProcessingException e1) {
 					e1.printStackTrace();
-				}
-				
-				try {
-					jblResponse.setText(controller.getInstancia().updateContador(pallet));
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
+				}			
 			}
 		});
 		
-		
 		panelCantPorPiso.add(jblPallet);
-		panelCantPorPiso.add(jblEtiquetaResponse);
-		panelCantPorPiso.add(jblResponse);
 		panelCantPorPiso.add(txtPallet);
 		panelCantPorPiso.add(btnConsulta);
-		
 		
 		this.add(panelCantPorPiso);		
 	}
@@ -427,6 +404,15 @@ public class consultaForm extends JFrame {
 		jblResponse.setFont(new Font("Comic Sans MS",Font.BOLD,20));
 		jblResponse.setHorizontalAlignment(SwingConstants.CENTER);
 		
+		// checkbox para ultimos registros
+		ultimosRegistros = new JCheckBox("CHKUltimos");
+		ultimosRegistros.setBounds(135, 45, 20, 20);
+		
+		jblCheck = new JLabel("Ultimos 20");
+		jblCheck.setBounds(160, 45, 100, 20);
+		jblCheck.setForeground(fntLbl);
+		
+		
 		// agregar txtbox para el pallet
 		txtPallet = new JTextField();
 		txtPallet.setBounds(135,10,200,30);
@@ -449,11 +435,20 @@ public class consultaForm extends JFrame {
 					return;
 				}
 				
-				try {
-					respuesta = controller.getInstancia().registrosPorPallet(pallet);
-				} catch (IOException e1) {
-					e1.printStackTrace();
+				if(ultimosRegistros.isSelected()) {
+					try {
+						respuesta = controller.getInstancia().ultimosRegistros(pallet);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				} else {
+					try {
+						respuesta = controller.getInstancia().registrosPorPallet(pallet);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
 				}
+			
 				
 				if(respuesta.isEmpty()) {	
 					JOptionPane.showMessageDialog(null,"No se encontro el pallet");
@@ -526,6 +521,8 @@ public class consultaForm extends JFrame {
 		panelByPallet.add(jblEtiquetaResponse);
 		panelByPallet.add(jblResponse);
 		panelByPallet.add(txtPallet);
+		panelByPallet.add(ultimosRegistros);
+		panelByPallet.add(jblCheck);
 		panelByPallet.add(btnConsulta);
 		
 		this.add(panelByPallet);
