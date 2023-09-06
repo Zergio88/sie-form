@@ -5,6 +5,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.Date;
 import java.text.SimpleDateFormat;
@@ -37,7 +40,7 @@ public class consultaForm extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	String pallet,nroSerie;
-	JPanel panelCantPorPallet, panelByNroSerie, panelCantPorPiso,panelByPallet, panelListaPallet;
+	JPanel panelCantPorPallet, panelByNroSerie, panelCantPorPiso,panelByPallet, panelListaPallet, panelByPatron;
 	JLabel jblPallet,jblNroSerie,jblEtiquetaResponse,jblResponse,jblCheck;
 	
 	JCheckBox ultimosRegistros;
@@ -88,6 +91,11 @@ public class consultaForm extends JFrame {
 			setTitle("Informes-Listado de pallets");
 			placePanelListadoDePallets();
 		}
+		
+		if(value==6) {
+			setTitle("Informes-Consulta por patron");
+			placePanelPorPatron();
+		}
 	}
 	
 	private void placePanelByNumeroSerie() {
@@ -106,6 +114,7 @@ public class consultaForm extends JFrame {
 		// agregar txtbox para el pallet
 		txtNroSerie= new JTextField();
 		txtNroSerie.setBounds(135,10,200,30);
+		txtNroSerie.addKeyListener(getEventoEnter());
 		
 		btnConsulta=new JButton("Consultar");
 		btnConsulta.setBounds(368, 10, 150, 30);
@@ -237,6 +246,7 @@ public class consultaForm extends JFrame {
 		// agregar txtbox para el pallet
 		txtPallet = new JTextField();
 		txtPallet.setBounds(135,10,200,30);
+		txtPallet.addKeyListener(getEventoEnter());
 		
 		
 		btnConsulta=new JButton("Consultar");
@@ -288,7 +298,7 @@ public class consultaForm extends JFrame {
 		// agregar txtbox para el pallet
 		txtPallet = new JTextField();
 		txtPallet.setBounds(135,10,200,30);
-		
+		txtPallet.addKeyListener(getEventoEnter());
 		
 		btnConsulta=new JButton("Consultar");
 		btnConsulta.setBounds(368, 10, 150, 30);
@@ -387,8 +397,7 @@ public class consultaForm extends JFrame {
 		jblPallet.setHorizontalAlignment(SwingConstants.CENTER);
 		jblPallet.setForeground(fntLbl);
 		jblPallet.setBounds(10, 10, 100, 30);
-		
-		
+				
 		/* Etiquetas para mostrar Total del pallet */
 		jblEtiquetaResponse = new JLabel("Cantidad: ");
 		jblEtiquetaResponse.setFont(new Font("Garamond",Font.BOLD,20));
@@ -416,6 +425,7 @@ public class consultaForm extends JFrame {
 		// agregar txtbox para el pallet
 		txtPallet = new JTextField();
 		txtPallet.setBounds(135,10,200,30);
+		txtPallet.addKeyListener(getEventoEnter());
 				
 		btnConsulta=new JButton("Consultar");
 		btnConsulta.setBounds(368, 10, 150, 30);
@@ -514,6 +524,8 @@ public class consultaForm extends JFrame {
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
+		    	
+		    	table.repaint();
 			}
 		});
 				
@@ -600,6 +612,138 @@ public class consultaForm extends JFrame {
 		
 	}
 	
+	private void placePanelPorPatron() {
+				
+		panelByPatron = new JPanel();
+		panelByPatron.setLayout(null);
+		panelByPatron.setBounds(0,0,800,600);
+		panelByPatron.setBackground(bgPanel);
+		
+		jblPallet = new JLabel("Patron: ");
+		jblPallet.setFont(new Font("Garamond",Font.BOLD,20));
+		jblPallet.setHorizontalAlignment(SwingConstants.CENTER);
+		jblPallet.setForeground(fntLbl);
+		jblPallet.setBounds(10, 10, 100, 30);
+			
+		/* Etiquetas para mostrar Total del pallet */
+		jblEtiquetaResponse = new JLabel("Cantidad: ");
+		jblEtiquetaResponse.setFont(new Font("Garamond",Font.BOLD,20));
+		jblEtiquetaResponse.setHorizontalAlignment(SwingConstants.CENTER);
+		jblEtiquetaResponse.setForeground(fntLbl);
+		jblEtiquetaResponse.setBounds(10, 500, 100, 30);
+		
+		jblResponse = new JLabel();
+		jblResponse.setBounds(135, 500, 200, 30);
+		jblResponse.setOpaque(true);
+		jblResponse.setBackground(bgResponse);
+		jblResponse.setForeground(fntResponse);
+		jblResponse.setFont(new Font("Comic Sans MS",Font.BOLD,20));
+		jblResponse.setHorizontalAlignment(SwingConstants.CENTER);
+			
+		// agregar txtbox para el pallet
+		txtPallet = new JTextField();
+		txtPallet.setBounds(135,10,200,30);
+		txtPallet.addKeyListener(getEventoEnter());
+				
+		btnConsulta=new JButton("Consultar");
+		btnConsulta.setBounds(368, 10, 150, 30);
+		btnConsulta.setBackground(bgResponse);
+		btnConsulta.setForeground(fntResponse);
+		btnConsulta.setFont(new Font("Garamond", Font.BOLD,20));
+		
+		btnConsulta.addActionListener(new ActionListener() {	
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				String respuesta="", tamanio="";
+				
+				pallet = txtPallet.getText();
+				if(pallet.isEmpty()) {
+					JOptionPane.showMessageDialog(null,"verifique campo pallet");
+					return;
+				}
+					
+				try {
+					respuesta = controller.getInstancia().getByPatron(pallet);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+	
+			
+				if(respuesta.isEmpty()) {	
+					JOptionPane.showMessageDialog(null,"No se encontro el pallet");
+					return;
+				}
+				
+				ObjectMapper objectMapper = new ObjectMapper();
+				// Crear un modelo de tabla
+		        DefaultTableModel tableModel = new DefaultTableModel();
+
+		        // Definir las columnas
+		        tableModel.addColumn("ID");
+		        tableModel.addColumn("Modelo");
+		        tableModel.addColumn("Serie");
+		        tableModel.addColumn("Estado");
+		        tableModel.addColumn("Pallet");
+		        tableModel.addColumn("Piso");
+		        tableModel.addColumn("Responsables");
+		        tableModel.addColumn("Fecha y Hora");
+
+		        try {
+		            // Parsear el JSON
+		            ArrayNode jsonArray = objectMapper.readValue(respuesta, ArrayNode.class);
+		            tamanio=Integer.toString(jsonArray.size());
+		            // Llenar el modelo de tabla
+		            for (JsonNode jsonNode : jsonArray) {
+		                if (jsonNode instanceof ObjectNode) {
+		                    ObjectNode jsonObject = (ObjectNode) jsonNode;
+		                    String fechaFormateada=formatearFecha(jsonObject.get("fechayhora").asText());
+		                    Object[] rowData = {
+		                            jsonObject.get("id").asInt(),
+		                            jsonObject.get("modelo").asText(),
+		                            jsonObject.get("serie").asText(),
+		                            jsonObject.get("estado").asText(),
+		                            jsonObject.get("pallet").asText(),
+		                            jsonObject.get("piso").asInt(),
+		                            jsonObject.get("responsables").asText(),
+		                            fechaFormateada
+		                    };
+		                    tableModel.addRow(rowData);
+		                    //System.out.println("RowData: "+rowData[0].toString() + "-" + rowData[1].toString() + "-" +rowData[2].toString() + "-" +rowData[3].toString() + "-" +rowData[4].toString() + "-" +rowData[5].toString() + "-" +rowData[6].toString()+ "-" +rowData[7].toString());
+		                }
+		            }
+		            
+		        } catch (IOException e1) {
+		            e1.printStackTrace();
+		        }
+
+		        // Crear la tabla
+		        JTable table = new JTable(tableModel);
+				// Establece el tamaño de la tabla
+				table.setRowHeight(20);
+
+		        // Crear un JScrollPane para la tabla si es necesario
+		        JScrollPane scrollPane = new JScrollPane(table);
+		        
+		        scrollPane.setBounds(20, 70, 750, 400);
+		        
+		    	panelByPatron.add(scrollPane, BorderLayout.CENTER);
+		    	
+				jblResponse.setText(tamanio);
+	
+			}
+		});
+				
+		panelByPatron.add(jblPallet);
+		panelByPatron.add(jblEtiquetaResponse);
+		panelByPatron.add(jblResponse);
+		panelByPatron.add(txtPallet);
+		panelByPatron.add(btnConsulta);
+		
+		this.add(panelByPatron);
+		
+	}
+	
 	private String formatearFecha(String fechasinFormat) {
 		String fechaFormateada=String.valueOf(fechasinFormat);
 		try {
@@ -612,6 +756,18 @@ public class consultaForm extends JFrame {
 		}
 		
 		return fechaFormateada;
+	}
+	
+	private KeyListener getEventoEnter() {
+		KeyAdapter accionEventoEnter = new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if(e.getKeyCode()==KeyEvent.VK_ENTER) {
+					btnConsulta.doClick();
+				}
+			}
+		};
+		return accionEventoEnter;
 	}
 	
 	// placePanel produccion por fecha
