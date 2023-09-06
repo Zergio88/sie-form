@@ -2,6 +2,7 @@ package ppal;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -202,6 +203,14 @@ public class consultaForm extends JFrame {
 
 					scrollPane.setBounds(10, 70, 750, 50);
 
+					/* borro la tabla anterior */
+					for(Component component : panelByNroSerie.getComponents()){
+						if(component instanceof JScrollPane){
+							panelByNroSerie.remove(component);
+							break;
+						}
+					}
+				
 					panelByNroSerie.add(scrollPane, BorderLayout.CENTER);
 				} catch (IOException e1) {
 					e1.printStackTrace();
@@ -368,6 +377,14 @@ public class consultaForm extends JFrame {
 
 					scrollPane.setBounds(20, 70, 500, 250);
 
+				/* borro la tabla anterior */
+				for(Component component : panelCantPorPiso.getComponents()){
+					if(component instanceof JScrollPane){
+						panelCantPorPiso.remove(component);
+						break;
+					}
+				}
+
 					panelCantPorPiso.add(scrollPane, BorderLayout.CENTER);
 					
 				} catch (JsonMappingException e1) {
@@ -386,7 +403,7 @@ public class consultaForm extends JFrame {
 	}
 	
 	private void placePanelByPallet() {
-		
+				
 		panelByPallet = new JPanel();
 		panelByPallet.setLayout(null);
 		panelByPallet.setBounds(0,0,800,600);
@@ -516,6 +533,14 @@ public class consultaForm extends JFrame {
 		        JScrollPane scrollPane = new JScrollPane(table);
 		        
 		        scrollPane.setBounds(20, 70, 750, 400);
+		        	
+		        /* borro la tabla anterior */
+				for(Component component : panelByPallet.getComponents()){
+					if(component instanceof JScrollPane){
+						panelByPallet.remove(component);
+						break;
+					}
+				}							
 		        
 		    	panelByPallet.add(scrollPane, BorderLayout.CENTER);
 		    	
@@ -524,8 +549,6 @@ public class consultaForm extends JFrame {
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
-		    	
-		    	table.repaint();
 			}
 		});
 				
@@ -726,6 +749,14 @@ public class consultaForm extends JFrame {
 		        JScrollPane scrollPane = new JScrollPane(table);
 		        
 		        scrollPane.setBounds(20, 70, 750, 400);
+		        
+		        /* borro la tabla anterior */
+				for(Component component : panelByPatron.getComponents()){
+					if(component instanceof JScrollPane){
+						panelByPatron.remove(component);
+						break;
+					}
+				}
 		        
 		    	panelByPatron.add(scrollPane, BorderLayout.CENTER);
 		    	
